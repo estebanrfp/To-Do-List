@@ -1,4 +1,4 @@
-import { GraphDB } from "https://cdn.jsdelivr.net/npm/gdb-p2p/+esm";
+import { GDB } from "https://cdn.jsdelivr.net/npm/gdb-p2p/+esm";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const taskInput = document.getElementById('task-input');
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const clearCompletedBtn = document.getElementById('clear-completed');
   const filterButtons = document.querySelectorAll('.filter');
 
-  const db = new GraphDB('todoList-47954');
+  const db = new GDB('todoList-47954');
   const taskCache = new Map();
   let currentFilter = 'all';
 
