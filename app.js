@@ -1,4 +1,4 @@
-import { GDB } from "https://cdn.jsdelivr.net/npm/gdb-p2p/+esm";
+import { GDB } from "https://cdn.jsdelivr.net/npm/genosdb/+esm";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const taskInput = document.getElementById('task-input');
