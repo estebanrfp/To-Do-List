@@ -1,6 +1,6 @@
-# GDB To-Do-List App
+# To-Do-List Distributed Application with GenosDB
 
-A simple task list application built with HTML, CSS, and GraphDB in vanilla JavaScript.
+A simple task list application built with HTML, CSS, and GenosDB in vanilla JavaScript.
 
 ## Features
 
