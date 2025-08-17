@@ -1,6 +1,7 @@
-import { GDB } from "https://cdn.jsdelivr.net/npm/genosdb/+esm";
+import { gdb } from "https://cdn.jsdelivr.net/npm/genosdb@latest/dist/index.min.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // UI Elements
   const taskInput = document.getElementById('task-input');
   const addButton = document.getElementById('add-button');
   const taskList = document.getElementById('task-list');
@@ -8,15 +9,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const clearCompletedBtn = document.getElementById('clear-completed');
   const filterButtons = document.querySelectorAll('.filter');
 
-  const db = new GDB('todoList-47954');
+  // Async DB initialization
+  const db = await gdb('todoList-47954');
   const taskCache = new Map();
   let currentFilter = 'all';
 
+  // Update pending tasks count
   const updateTasksCount = () => {
     const count = [...taskCache.values()].filter(t => !t.completed).length;
-    tasksCount.textContent = `${count} ${count === 1 ? 'tarea pendiente' : 'tareas pendientes'}`;
+    tasksCount.textContent = `${count} ${count === 1 ? 'pending task' : 'pending tasks'}`;
   };
 
+  // Create a task list item
   const createTaskElement = (id, task) => {
     const li = document.createElement('li');
     li.className = `task-item ${task.completed ? 'completed' : ''}`;
@@ -39,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return li;
   };
 
+  // Render tasks according to filter
   const renderTasks = () => {
     taskList.innerHTML = '';
     [...taskCache.entries()]
@@ -47,10 +52,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentFilter === 'completed' ? task.completed : true
       )
       .forEach(([id, task]) => taskList.appendChild(createTaskElement(id, task)));
-
     updateTasksCount();
   };
 
+  // Add a new task
   const addTask = async () => {
     const text = taskInput.value.trim();
     if (!text) return;
@@ -59,18 +64,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     taskInput.focus();
   };
 
+  // Toggle task completion status
   const toggleTaskStatus = async (id) => {
     const task = taskCache.get(id);
     if (!task) return;
     await db.put({ ...task, completed: !task.completed }, id);
   };
 
+  // Remove all completed tasks
   const clearCompletedTasks = async () => {
     for (const [id, task] of taskCache.entries()) {
       if (task.completed) await db.remove(id);
     }
   };
 
+  // Change filter and update UI
   const changeFilter = (filter) => {
     currentFilter = filter;
     filterButtons.forEach(btn =>
@@ -79,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderTasks();
   };
 
-  // Reacción en tiempo real a la base de datos
+  // Real-time DB reaction
   await db.map(({ id, value, action }) => {
     if (['added', 'initial', 'updated'].includes(action)) taskCache.set(id, value);
     if (action === 'removed') taskCache.delete(id);
