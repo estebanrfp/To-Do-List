@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const filterButtons = document.querySelectorAll('.filter');
 
   // Async DB initialization
-  const db = await gdb('todoList-47954');
+  const db = await gdb('todoList-47954', { rtc: true });
   const taskCache = new Map();
   let currentFilter = 'all';
 
